@@ -1,7 +1,7 @@
 ## Reproducing data
 ```
-python3 download.py
-python3 preprocess.py
-python3 limit_dates.py
-python3 merge.py
+python3 preprocessing/download.py
+python3 preprocessing/preprocess.py
+python3 preprocessing/limit_dates.py
+python3 preprocessing/merge.py
 ```
