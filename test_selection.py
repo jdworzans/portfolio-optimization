@@ -12,3 +12,4 @@ def test_selection():
         ]
     )
     np.testing.assert_equal(selection(example, 2), np.array([0, 1]))
+    np.testing.assert_equal(selection(example, 3), np.array([0, 1, 2]))
