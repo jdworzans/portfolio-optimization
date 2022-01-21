@@ -16,4 +16,4 @@ def select_by_crowding_dist(objectives, n: int) -> np.ndarray:
     crowding_distances = np.zeros(len(objectives))
     for m in range(np.shape(objectives)[-1]):
         crowding_distances += get_crowding_distances(objectives[:, m])
-    return np.argsort(crowding_distances)[::-1]
+    return np.argsort(crowding_distances)[::-1][:n]

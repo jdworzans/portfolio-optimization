@@ -1,6 +1,6 @@
 import numpy as np
 
-from crowding_dist import get_crowding_distances
+from crowding_dist import get_crowding_distances, select_by_crowding_dist
 
 
 def test_crowding_distance_for_two_values():
@@ -17,3 +17,39 @@ def test_crowding_distance_for_three_values():
     assert crowding_distances[2] == (ordered[2] - ordered[0]) / (
         max(example) - min(example)
     )
+
+def test_select_by_crowding_dist():
+    example = np.array(
+        [
+            [1, 0],
+            [0, 1],
+            [0.5, 0.5],
+        ]
+    )
+
+    selected2 = select_by_crowding_dist(example, 2)
+    assert set(selected2) == {0, 1}
+
+    selected3 = select_by_crowding_dist(example, 3)
+    assert set(selected3) == {0, 1, 2}
+
+def test_select_by_crowding_dist_wtih_5_elements():
+    example = np.array(
+        [
+            [1, 0],
+            [0, 1],
+            [0.5, 0.5],
+            [0.55, 0.45],
+            [0.45, 0.55],
+        ]
+    )
+
+    selected2 = select_by_crowding_dist(example, 2)
+    assert set(selected2) == {0, 1}
+
+    selected4 = select_by_crowding_dist(example, 4)
+    assert set(selected4) == {0, 1, 3, 4}
+
+    selected5 = select_by_crowding_dist(example, 4)
+    assert set(selected5) == {0, 1, 2, 3, 4}
+    
