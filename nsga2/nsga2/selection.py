@@ -1,7 +1,7 @@
 import numpy as np
 
-from crowding_dist import select_by_crowding_dist
-from domination import get_domination_info
+from nsga2.crowding_dist import select_by_crowding_dist
+from nsga2.domination import get_domination_info
 
 
 def get_pareto_front(domination_count: np.ndarray) -> np.ndarray:

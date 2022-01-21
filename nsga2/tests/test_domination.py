@@ -1,6 +1,6 @@
 import numpy as np
 
-from domination import get_domination_count, get_domination_info, get_dominators_idxs
+from nsga2.domination import get_domination_count, get_domination_info, get_dominators_idxs
 
 
 def test_domination_count():

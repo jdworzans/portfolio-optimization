@@ -1,6 +1,6 @@
 import numpy as np
 
-from crowding_dist import get_crowding_distances, select_by_crowding_dist
+from nsga2.crowding_dist import get_crowding_distances, select_by_crowding_dist
 
 
 def test_crowding_distance_for_two_values():
@@ -50,6 +50,6 @@ def test_select_by_crowding_dist_wtih_5_elements():
     selected4 = select_by_crowding_dist(example, 4)
     assert set(selected4) == {0, 1, 3, 4}
 
-    selected5 = select_by_crowding_dist(example, 4)
+    selected5 = select_by_crowding_dist(example, 5)
     assert set(selected5) == {0, 1, 2, 3, 4}
     

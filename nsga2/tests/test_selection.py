@@ -1,6 +1,6 @@
 import numpy as np
 
-from selection import selection
+from nsga2.selection import selection
 
 
 def test_selection_with_2_simple_fronts():
