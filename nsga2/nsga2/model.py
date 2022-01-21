@@ -10,17 +10,6 @@ DEFAULT_POPULATION_SIZE = 500
 DEGAULT_N_ITERATIONS = 250
 DEFAULT_SGA_ITERATIONS = 3
 
-def get_portfolios_vars(weights, SIGMA):
-    return np.einsum("...i,ij,...j", weights, SIGMA, weights)
-
-def get_portfolios_returns(weights, R):
-    return weights @ R
-    return np.einsum("i,i...", R, weights)
-
-SIGMA = np.eye(18)
-R = np.ones(18)
-
-
 def get_iter(iterable, use_tqdm: bool = False):
     if use_tqdm:
         return tqdm(iterable)
@@ -49,11 +38,6 @@ class NSGA2:
         normalized_population = population / population.sum(axis=-1, keepdims=True)
         return normalized_population
 
-    def evaluate(self, population):
-        vars = get_portfolios_vars(population, SIGMA)
-        returns = get_portfolios_returns(population, R)
-        return np.column_stack([returns, vars])
-
     def parent_selection(self, objective_values):
         fitness_values = objective_values.max(axis=0) - objective_values
         fitness_sum = fitness_values.sum(axis=0)
@@ -69,17 +53,17 @@ class NSGA2:
     def select_new_population(self, objective_values):
         return np.array(selection(objective_values, self.population_size))
 
-    def simulate(self, progress=True):
+    def simulate(self, objective, progress=True):
         objective_history = []
         current_population = self.get_initial_population(self.chromosome_length)
-        objective_values = self.evaluate(current_population)
+        objective_values = objective(current_population)
 
         for t in get_iter(range(self.n_iterations), progress):
             parent_indices = self.parent_selection(objective_values)
             parent_population = current_population[parent_indices, :]
             children_population = self.crossover(parent_population)
             self.mutation(children_population)
-            children_objective_values = self.evaluate(children_population)
+            children_objective_values = objective(children_population)
 
             objective_values = np.concatenate([objective_values, children_objective_values])
             current_population = np.concatenate([current_population, children_population])
