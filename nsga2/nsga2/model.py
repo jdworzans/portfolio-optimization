@@ -42,6 +42,7 @@ class NSGA2:
         fitness_values = objective_values.max(axis=0) - objective_values
         fitness_sum = fitness_values.sum(axis=0)
         if (fitness_sum > 0).any():
+            fitness_values = fitness_values[:, (fitness_sum > 0)]
             fitness_values = (fitness_values / fitness_sum).mean(axis=-1)
             return self.rng.choice(
                 self.population_size, self.population_size, True, fitness_values
