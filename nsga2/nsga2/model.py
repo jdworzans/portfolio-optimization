@@ -63,6 +63,7 @@ class NSGA2:
             parent_indices = self.parent_selection(objective_values)
             parent_population = current_population[parent_indices, :]
             children_population = self.crossover(parent_population)
+            children_population = children_population / children_population.sum(axis=-1, keepdims=True)
             self.mutation(children_population)
             children_objective_values = objective(children_population)
 
