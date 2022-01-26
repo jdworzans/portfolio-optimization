@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from nsga2.model import NSGA2
 from nsga2.objectives import (get_objective, portfolios_neg_returns,
-                              portfolios_vars)
+                              portfolios_semivariances, portfolios_vars)
 
 
 def test_model_work():
@@ -14,6 +14,7 @@ def test_model_work():
     objective = get_objective(
         partial(portfolios_neg_returns, R=R),
         partial(portfolios_vars, SIGMA=SIGMA),
+        portfolios_semivariances,
     )
     nsga = NSGA2(18, 100, 10)
     nsga.simulate(objective, False)
