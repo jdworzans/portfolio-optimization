@@ -32,6 +32,12 @@ class Crossover:
     def __call__(self, population):
         return self.crossover(population)
 
+class UniformCX(Crossover):
+    def cross(self, parent1, parent2):
+        chrosome_choice = self.rng.integers(0, 2, len(parent1))
+        child1 = np.where(chrosome_choice, parent1, parent2)
+        child2 = np.where(chrosome_choice, parent2, parent1)
+        return child1, child2
 
 class CX(Crossover):
     def cross(self, parent1, parent2):
@@ -71,35 +77,3 @@ class PMX(Crossover):
         return self._cross(
             parent1, parent2, *sorted(self.rng.choice(len(parent1), 2, replace=False))
         )
-
-class EdgeRecombination(Crossover):
-    def _cross(self, parent1, parent2):
-        neighbors = {el: set() for el in parent1}
-        for i, el in enumerate(parent1):
-            neighbors[el].add(parent1[(i - 1) % len(parent1)])
-            neighbors[el].add(parent1[(i + 1) % len(parent1)])
-        for i, el in enumerate(parent2):
-            neighbors[el].add(parent2[(i - 1) % len(parent2)])
-            neighbors[el].add(parent2[(i + 1) % len(parent2)])
-        child_el = self.rng.choice(np.array(list(neighbors.keys())))
-        child = [child_el]
-        while len(child) < len(parent1):
-            child_el_neighbors = neighbors.pop(child_el)
-            for el, el_neighbors in neighbors.items():
-                el_neighbors.discard(child_el)
-            if child_el_neighbors:
-                best_neighbors, best_n_neighbors = [], 0
-                for neighbor in child_el_neighbors:
-                    n_neighbors = len(neighbors[neighbor])
-                    if n_neighbors > best_n_neighbors:
-                        best_neighbors, best_n_neighbors = [neighbor], n_neighbors
-                    elif n_neighbors == best_n_neighbors:
-                        best_neighbors.append(neighbor)
-                child_el = self.rng.choice(best_neighbors)
-            else:
-                child_el = self.rng.choice(np.array(list(neighbors.keys())))
-            child.append(child_el)
-        return child
-
-    def cross(self, parent1, parent2):
-        return self._cross(parent1, parent2), self._cross(parent1, parent2)
