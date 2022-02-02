@@ -30,7 +30,7 @@ class NSGA2:
         self.population_size = population_size
         self.n_iterations = n_iterations
         self.crossover = crossovers.UniformCX() if crossover is None else crossover
-        self.mutation = mutations.ReverseSequence() if mutation is None else mutation
+        self.mutation = mutations.PolynomialMutation() if mutation is None else mutation
         self.rng = rng
 
     def get_initial_population(self, chromosome_length):
