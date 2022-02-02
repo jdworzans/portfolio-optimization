@@ -77,3 +77,23 @@ class PMX(Crossover):
         return self._cross(
             parent1, parent2, *sorted(self.rng.choice(len(parent1), 2, replace=False))
         )
+
+class SBX(Crossover):
+    def __init__(self, n=0, crossover_probability: float = 0.9, rng=DEFAULT_RNG):
+        super().__init__(crossover_probability, rng)
+        self.n = n
+
+    @staticmethod
+    def sbx_icdf(p, n):
+        result = np.asarray(p, dtype=float).copy()
+        np.power(2*p, -(n+1), out=result, where=(p > 0)&(p <= 0.5))
+        np.divide(0.5, (1-p), out=result, where=(p > 0.5))
+        return result
+
+    def cross(self, parent1, parent2):
+        """Based on 'Real-coded Genetic Algorithms with Simulated Binary Crossover: Studies on Multimodal and Multiobjective Problems'"""
+        u = self.rng.uniform(0, 1, len(parent1))
+        beta = self.sbx_icdf(u, self.n)
+        parent_sum = parent1 + parent2
+        parent_diff = np.abs(parent1 - parent2)
+        return 0.5 * (parent_sum - beta * parent_diff), 0.5 * (parent_sum + beta * parent_diff) 

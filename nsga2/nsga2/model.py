@@ -29,7 +29,7 @@ class NSGA2:
         self.chromosome_length = chromosome_length
         self.population_size = population_size
         self.n_iterations = n_iterations
-        self.crossover = crossovers.UniformCX() if crossover is None else crossover
+        self.crossover = crossovers.SBX() if crossover is None else crossover
         self.mutation = mutations.PolynomialMutation() if mutation is None else mutation
         self.rng = rng
 
