@@ -86,9 +86,9 @@ class SBX(Crossover):
     @staticmethod
     def sbx_icdf(p, n):
         result = np.asarray(p, dtype=float).copy()
-        np.power(2*p, -(n+1), out=result, where=(p > 0)&(p <= 0.5))
-        np.divide(0.5, (1-p), out=result, where=(p > 0.5))
-        return result
+        np.multiply(2, p, where=(p <= 0.5), out=result)
+        np.divide(0.5, 1 - p, where=(p > 0.5), out=result)
+        return np.power(result, 1 / (n + 1))
 
     def cross(self, parent1, parent2):
         """Based on 'Real-coded Genetic Algorithms with Simulated Binary Crossover: Studies on Multimodal and Multiobjective Problems'"""
