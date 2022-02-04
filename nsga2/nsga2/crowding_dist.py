@@ -5,6 +5,8 @@ def get_crowding_distances(objectives: np.ndarray) -> np.ndarray:
     result = np.zeros(len(objectives))
     order = np.argsort(objectives)
     f_min, f_max = objectives[order[[0, -1]]]
+    if f_max == f_min:
+        return np.full_like(result, np.inf)
     result[order[[0, -1]]] = np.inf
     result[order[1:-1]] = (objectives[order[2:]] - objectives[order[:-2]]) / (
         f_max - f_min
