@@ -38,19 +38,6 @@ class NSGA2:
         normalized_population = 1 / chromosome_length - population
         return normalized_population
 
-    def parent_selection(self, objective_values):
-        fitness_values = objective_values.max(axis=0) - objective_values
-        fitness_sum = fitness_values.sum(axis=0)
-        if (fitness_sum > 0).any():
-            fitness_values = fitness_values[:, (fitness_sum > 0)]
-            fitness_values = (fitness_values / fitness_sum).mean(axis=-1)
-            return self.rng.choice(
-                self.population_size, self.population_size, True, fitness_values
-            )
-        else:
-            return self.rng.choice(self.population_size, self.population_size, True)
-
-
     def select_new_population(self, objective_values):
         return np.array(selection(objective_values, self.population_size))
 
@@ -60,9 +47,7 @@ class NSGA2:
         objective_values = objective(current_population)
 
         for t in get_iter(range(self.n_iterations), progress):
-            parent_indices = self.parent_selection(objective_values)
-            parent_population = current_population[parent_indices, :]
-            children_population = self.crossover(parent_population)
+            children_population = self.crossover(current_population)
             self.mutation(children_population)
             children_population = children_population + 1 / children_population.shape[-1] - children_population.mean(axis=-1, keepdims=True)
             children_objective_values = objective(children_population)

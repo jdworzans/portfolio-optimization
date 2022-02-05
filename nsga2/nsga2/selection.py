@@ -26,3 +26,17 @@ def selection(objectives: np.ndarray, n: int) -> np.ndarray:
             for dominated_idx in dominated[idx]:
                 domination_count[dominated_idx] -= 1
     return selected
+
+def get_fitness_values(objectives: np.ndarray) -> np.ndarray:
+    result = np.zeros_like(objectives, dtype=float)
+    mask = ~np.isinf(objectives)
+    masked_objectives = objectives[mask]
+
+    max_objective = np.max(masked_objectives)
+    adjusted = max_objective - masked_objectives
+    adjusted_sum = adjusted.sum()
+    if (adjusted_sum != 0):
+        result[mask] = adjusted / adjusted.sum()
+    else:
+        result[mask] = 1 / len(adjusted)
+    return result
