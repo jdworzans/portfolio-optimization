@@ -20,3 +20,12 @@ i ponownie uruchomić polecenie po upłynięciu odpowiedniego czasu (lub z wykor
 pip install -e nsga2
 pytest nsga2
 ```
+
+# Losowość
+Wszystkie algorytmy zaimplementowane w ramach `nsga2` korzystają z generatora liczb losowych z `nsga2.defaults`.
+Aby otrzymać inne wyniki, należy zmienić zapisane tam, domyślne, ziarno generatora, lub nadpisać poprzez
+```
+import numpy as np
+from nsga2.defaults import DEFAULT_RNG
+DEFAULT_RNG = np.random.default_rng(<NOWE ZIARNO>)
+```
