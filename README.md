@@ -29,3 +29,6 @@ import numpy as np
 from nsga2.defaults import DEFAULT_RNG
 DEFAULT_RNG = np.random.default_rng(<NOWE ZIARNO>)
 ```
+
+# Dane
+Dane, pobrane do wykonania projektu znajdują się w folderze `data`.
